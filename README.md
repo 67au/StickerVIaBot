@@ -6,7 +6,7 @@
 
 - `python>=3.7`
 - `pyrogram~=2.0.97`
-- `pluginlib～=0.9.0`
+- `pluginlib~=0.9.0`
 
 ## Installation
 
