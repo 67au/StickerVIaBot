@@ -37,6 +37,8 @@ class Utils:
         match = query.matches[-1]
         file_id = match.group('FILE_ID')
         if file_id is None:
+            if match.group('MSG_ID') is None:
+                return None
             msg_id = int(match.group('MSG_ID'))
             msg = await self.get_messages(query.from_user.id, msg_id)
             if msg.sticker is None:
