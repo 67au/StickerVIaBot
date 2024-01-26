@@ -1,9 +1,11 @@
 import binascii
 import io
+import re
 import struct
 from typing import BinaryIO, Union, Optional
 
 from pyrogram import Client
+from pyrogram.types import InlineQuery
 from pyrogram.file_id import FileId, FileType
 from pyrogram.raw.functions import messages
 from pyrogram.raw.types import InputPeerSelf, InputMediaUploadedDocument
@@ -31,6 +33,16 @@ class Utils:
         ).encode()
         return file_id
 
+    async def get_file_id_from_query(self: Client, query: InlineQuery) -> Optional[str]:
+        match = query.matches[-1]
+        file_id = match.group('FILE_ID')
+        if file_id is None:
+            msg_id = int(match.group('MSG_ID'))
+            msg = await self.get_messages(query.from_user.id, msg_id)
+            if msg.sticker is None:
+                return None
+            file_id = msg.sticker.file_id
+        return file_id if check_sticker(file_id) else None
 
 def decode_file_id(file_id) -> Optional[FileId]:
     try:

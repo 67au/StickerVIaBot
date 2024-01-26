@@ -30,7 +30,7 @@ class InlineQueryPlugin(object):
 
     @property
     def inline_pattern(self) -> str:
-        return rf'{self.cmd}(@{self.pattern})'
+        return rf'{self.cmd}(@{self.pattern}@)'
 
     @staticmethod
     def build_result_cached_sticker(file_id) -> InlineQueryResultCachedSticker:

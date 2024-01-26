@@ -42,11 +42,13 @@ def create_bot(
     @bot.on_message(filters=filters.command('start') & filters.private)
     async def hello(client: Client, message: Message) -> None:
         await message.reply(
-            'Send me `Sticker` to get `FILE_ID`'
-            '\nor\n'
-            'Use `Inline Mode` to generate `Sticker`',
+            f'欢迎使用 {session_name}\n'
+            '向 Bot 发送静态 Sticker 来获取 [FILE_ID] 或 [MSG_ID] \n'
+            '\n'
+            '[FILE_ID] 是能在用户间共享使用的 Sticker ID\n'
+            '[MSG_ID] 是当前用户与 Bot 对话中 Sticker 的聊天记录 ID , 仅当前用户使用的便捷参数',
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton('Inline Mode', switch_inline_query='')]]
+                [[InlineKeyboardButton('试试 Inline 模式!', switch_inline_query='')]]
             )
         )
 
@@ -54,8 +56,16 @@ def create_bot(
     async def sticker(client: Client, message: Message) -> None:
         await message.reply(
             '**[FILE_ID]**\n'
-            f'`{message.sticker.file_id}`',
-            reply_to_message_id=message.id
+            f'`{message.sticker.file_id}`\n'
+            '**[MSG_ID]**\n'
+            f'`MSG{message.id}`\n',
+            reply_to_message_id=message.id,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton('Try! [FILE_ID]', switch_inline_query=f'r@{message.sticker.file_id}@'),
+                    InlineKeyboardButton('Try! [MSG_ID]', switch_inline_query=f'r@MSG{message.id}@')],
+                ]
+            )
         )
 
     async def handle_inline_query(bot: Bot, query: InlineQuery, iter_results):
