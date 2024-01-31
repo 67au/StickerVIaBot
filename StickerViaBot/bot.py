@@ -16,6 +16,10 @@ CACHE_TIME = 60
 
 class Bot(Client, Utils):
 
+    def __init__(self, *args, **kwargs):
+        super(Bot, self).__init__(*args, **kwargs)
+        self.inline_plugins = None
+
     async def run_in_executor(self, func, *args, **kwargs):
         return await self.loop.run_in_executor(
             executor=None,
@@ -91,6 +95,7 @@ def create_bot(
 
     loader = pluginlib.PluginLoader(library=plugins['root'])
     inline_query: dict = loader.plugins.inline_query
+    bot.inline_plugins = inline_query
     for name, cls in inline_query.items():
         logging.info(f'Loading Inline Query Plugin: {name}')
         plugin = cls()

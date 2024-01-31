@@ -10,6 +10,8 @@ from .bot import Bot
 @pluginlib.Parent('inline_query')
 class InlineQueryPlugin(object):
 
+    usage = ''
+
     @property
     @pluginlib.abstractmethod
     def cmd(self) -> str:
