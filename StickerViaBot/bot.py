@@ -77,7 +77,7 @@ def create_bot(
                     input_message_content=InputTextMessageContent(f'**Invalid Input:**\n`{query.query}`')
                 )
             ],
-            is_gallery=True,
+            is_gallery=any(result),
             cache_time=cache_time,
         )
 
